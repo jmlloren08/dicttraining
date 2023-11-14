@@ -1,12 +1,12 @@
 <?php
 
-    if (auth()->user()->inGroup('admin')){
-        $requireddisabled   = "disabled";
-        //$valstat            = null;
-    } else {
-        $requireddisabled   = "required";
-        //$valstat            = "Open";
-    }
+if (auth()->user()->inGroup('admin')) {
+    $requireddisabled   = "disabled";
+    //$valstat            = null;
+} else {
+    $requireddisabled   = "required";
+    //$valstat            = "Open";
+}
 
 ?>
 
@@ -287,9 +287,9 @@
             },
             {
                 data: '',
-                defaultContent: `<td>
-            <button class="btn btn-warning btn-sm" id="editRow">Edit</button>
-            <button class="btn btn-danger btn-sm" id="deleteRow">Delete</button>
+                defaultContent: `<td class="text-right py-0 align-middle"><div class="btn-group btn-group-sm">
+            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></button>
+            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></button>
             </td>`
             }
         ],
@@ -301,30 +301,53 @@
         autoWidth: true,
         lengthMenu: [10, 20, 30, 50],
 
+        //color coding severity...
         rowCallback: function(row, data) {
             var severity = data.catseverity;
-            var status = data.catstatus;
-            var backgroundColor;
+            var badgeColor;
             switch (severity) {
                 case 'Low':
-                    backgroundColor = 'blue';
+                    badgeColor = 'badge bg-primary';
                     break;
                 case 'Medium':
-                    backgroundColor = 'yellow';
+                    badgeColor = 'badge bg-warning';
                     break;
                 case 'High':
-                    backgroundColor = 'orange';
+                    badgeColor = 'badge bg-orange';
                     break;
                 case 'Critical':
-                    backgroundColor = 'red';
+                    badgeColor = 'badge bg-danger';
                     break;
                 default:
-                    backgroundColor = '';
+                    badgeColor = 'badge';
             }
+
+            $('td:eq(5)', row).html(`<span class="${badgeColor}">${severity}</span>`);
+
+            var status = data.catstatus;
+            var badgeColor2;
+
+            switch (status) {
+                case 'Open':
+                    badgeColor2 = 'badge badge-secondary';
+                    break;
+                case 'Pending':
+                    badgeColor2 = 'badge badge-info';
+                    break;
+                case 'Processing':
+                    badgeColor2 = 'badge badge-warning';
+                    break;
+                case 'Resolved':
+                    badgeColor2 = 'badge badge-success';
+                    break;
+                default:
+                    badgeColor2 = 'badge';
+            }
+
+            $('td:eq(7)', row).html(`<span class="${badgeColor2}">${status}</span>`);
+
             if (status == "Resolved") {
                 $(row).css('background-color', '#01ff70');
-            } else {
-                $(row).css('background-color', backgroundColor);
             }
         }
 
