@@ -151,7 +151,7 @@
                                 autohide: true,
                                 delay: 3000
                             });
-                            //$("#modalID").modal("hide");
+                            $("#modalID").modal("hide");
                             clearForm();
                             table.ajax.reload();
                         },
@@ -194,8 +194,8 @@
             {
                 data: '',
                 defaultContent: `<td class="text-right py-0 align-middle"><div class="btn-group btn-group-sm">
-            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></button>
-            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></button>
+            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></a>
+            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></a>
             </td>`
             }
         ],

@@ -39,7 +39,7 @@ if (auth()->user()->inGroup('admin')) {
         <table id="dataTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <!-- <th>ID</th> -->
+                    <th>ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
@@ -262,6 +262,9 @@ if (auth()->user()->inGroup('admin')) {
             type: "POST"
         },
         columns: [{
+                data: "id",
+            },
+            {
                 data: 'ticket_firstname',
             },
             {
@@ -285,8 +288,8 @@ if (auth()->user()->inGroup('admin')) {
             {
                 data: '',
                 defaultContent: `<td class="text-right py-0 align-middle"><div class="btn-group btn-group-sm">
-            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></button>
-            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></button>
+            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></a>
+            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></a>
             </td>`
             }
         ],
@@ -319,7 +322,7 @@ if (auth()->user()->inGroup('admin')) {
                     badgeColor = 'badge';
             }
 
-            $('td:eq(4)', row).html(`<span class="${badgeColor}">${severity}</span>`);
+            $('td:eq(5)', row).html(`<span class="${badgeColor}">${severity}</span>`);
 
             var status = data.catstatus;
             var badgeColor2;
@@ -341,7 +344,7 @@ if (auth()->user()->inGroup('admin')) {
                     badgeColor2 = 'badge';
             }
 
-            $('td:eq(6)', row).html(`<span class="${badgeColor2}">${status}</span>`);
+            $('td:eq(7)', row).html(`<span class="${badgeColor2}">${status}</span>`);
 
             if (status == "Resolved") {
                 $(row).css('background-color', '#01ff70');
