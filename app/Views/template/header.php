@@ -20,6 +20,10 @@
   <link rel="stylesheet" href="<?= base_url() ?>public/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/style.css" />
+  <link rel="stylesheet" href="<?= base_url() ?>public/dist/css/responsive.css" />
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?= base_url() ?>public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
