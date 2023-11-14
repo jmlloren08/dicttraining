@@ -179,9 +179,9 @@
             },
             {
                 data: '',
-                defaultContent: `<td>
-            <button class="btn btn-warning btn-sm" id="editRow">Edit</button>
-            <button class="btn btn-danger btn-sm" id="deleteRow">Delete</button>
+                defaultContent: `<td class="text-right py-0 align-middle"><div class="btn-group btn-group-sm">
+            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></button>
+            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></button>
             </td>`
             }
         ],
