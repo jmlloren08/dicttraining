@@ -65,12 +65,10 @@ class Auth extends ShieldAuth
      * to apply any logic you may need.
      */
     public array $redirects = [
-        'register'          => '/',
-        'login'             => '/',
-        'logout'            => 'login',
-        'force_reset'       => '/',
-        'permission_denied' => '/',
-        'group_denied'      => '/',
+        'register'    => '/',
+        'login'       => '/',
+        'logout'      => 'login',
+        'force_reset' => '/',
     ];
 
     /**
@@ -154,7 +152,7 @@ class Auth extends ShieldAuth
      * logged-in user on every page request.
      * This feature only works when session/tokens filter is active.
      *
-     * @see https://codeigniter4.github.io/shield/quick_start_guide/using_session_auth/#protecting-pages for set filters.
+     * @see https://codeigniter4.github.io/shield/install/#protect-all-pages for set filters.
      */
     public bool $recordActiveDate = true;
 
@@ -356,14 +354,14 @@ class Auth extends ShieldAuth
      * --------------------------------------------------------------------
      * The BCRYPT method of hashing allows you to define the "cost"
      * or number of iterations made, whenever a password hash is created.
-     * This defaults to a value of 12 which is an acceptable number.
+     * This defaults to a value of 10 which is an acceptable number.
      * However, depending on the security needs of your application
      * and the power of your hardware, you might want to increase the
      * cost. This makes the hashing process takes longer.
      *
      * Valid range is between 4 - 31.
      */
-    public int $hashCost = 12;
+    public int $hashCost = 10;
 
     /**
      * If you need to support passwords saved in versions prior to Shield v1.0.0-beta.4.
@@ -473,28 +471,6 @@ class Auth extends ShieldAuth
     public function forcePasswordResetRedirect(): string
     {
         $url = setting('Auth.redirects')['force_reset'];
-
-        return $this->getUrl($url);
-    }
-
-    /**
-     * Returns the URL the user should be redirected to
-     * if permission denied.
-     */
-    public function permissionDeniedRedirect(): string
-    {
-        $url = setting('Auth.redirects')['permission_denied'];
-
-        return $this->getUrl($url);
-    }
-
-    /**
-     * Returns the URL the user should be redirected to
-     * if group denied.
-     */
-    public function groupDeniedRedirect(): string
-    {
-        $url = setting('Auth.redirects')['group_denied'];
 
         return $this->getUrl($url);
     }
