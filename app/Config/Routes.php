@@ -12,16 +12,16 @@ $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 
-$routes->get('dashboard', 'DashboardController::index', ['filter' => 'auth']);
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'session']);
 
-$routes->post('offices/list', 'OfficeController::list', ['filter' => 'groupfilter:admin']);
-$routes->post('categories/list', 'CategoryController::list', ['filter' => 'groupfilter:admin']);
-$routes->post('users/list', 'UsersController::list', ['filter' => 'groupfilter:admin']);
-$routes->post('tickets/list', 'TicketController::list', ['filter' => 'auth']);
+$routes->post('offices/list', 'OfficeController::list', ['filter' => 'group:admin']);
+$routes->post('categories/list', 'CategoryController::list', ['filter' => 'group:admin']);
+$routes->post('users/list', 'UsersController::list', ['filter' => 'group:admin']);
+$routes->post('tickets/list', 'TicketController::list', ['filter' => 'session']);
 
-$routes->resource('offices', ['controller' => 'OfficeController', 'except' => ['new', 'edit'],'filter' => 'groupfilter:admin' ]);
-$routes->resource('categories', ['controller' => 'CategoryController', 'except' => ['new', 'edit'],'filter' => 'groupfilter:admin' ]);
-$routes->resource('users', ['controller' => 'UserController', 'except' => ['new', 'edit'],'filter' => 'groupfilter:admin' ]);
-$routes->resource('tickets', ['controller' => 'TicketController', 'except' => ['new', 'edit'],'filter' => 'auth' ]);
+$routes->resource('offices', ['controller' => 'OfficeController', 'except' => ['new', 'edit'],'filter' => 'group:admin' ]);
+$routes->resource('categories', ['controller' => 'CategoryController', 'except' => ['new', 'edit'],'filter' => 'group:admin' ]);
+$routes->resource('users', ['controller' => 'UserController', 'except' => ['new', 'edit'],'filter' => 'group:admin' ]);
+$routes->resource('tickets', ['controller' => 'TicketController', 'except' => ['new', 'edit'],'filter' => 'session' ]);
 
 service('auth')->routes($routes);
