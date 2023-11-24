@@ -47,18 +47,18 @@
                             <div class="card-body">
                                 <input type="hidden" id="id" name="id">
                                 <div class="form-group">
-                                    <label for="office_name">Office Name</label>
-                                    <input type="text" class="form-control" id="office_name" name="office_name" placeholder="Enter your office" required>
+                                    <label for="firstname">Firstname</label>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter firstname" required>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
-                                        Please enter a office name.
+                                        Please enter your firstname.
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="office_code">Office Code</label>
-                                    <input type="text" class="form-control" id="office_code" name="office_code" placeholder="Enter office code" required>
+                                    <label for="lastname">Lastname</label>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter lastname" required>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>

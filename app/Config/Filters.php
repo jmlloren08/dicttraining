@@ -27,7 +27,7 @@ class Filters extends BaseConfig
         'secureheaders' => SecureHeaders::class,
         // 'groupfilter'   => \CodeIgniter\Shield\Filters\GroupFilter::class,
         // 'auth'          => \App\Filters\Auth::class,
-        'auth2'         => \App\Filters\AuthenticationFilter::class,
+        'auth'          => \App\Filters\AuthenticationFilter::class,
     ];
 
     /**

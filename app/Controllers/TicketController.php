@@ -14,6 +14,11 @@ class TicketController extends ResourceController
      */
     public function index()
     {
+        // if (!isset($_SESSION['user']))
+        // {
+        //     return redirect()->to(base_url('login'));
+        // }
+        
         $office = new \App\Models\Office();
         $category = new \App\Models\Category();
         $data['categories'] = $category->findAll();

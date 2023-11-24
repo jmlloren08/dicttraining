@@ -9,10 +9,10 @@ class DashboardController extends BaseController
     public function index()
     {
         //session_start();
-        if (!isset($_SESSION['user']))
-        {
-            return redirect()->to(base_url('login'));
-        }
+        // if (!isset($_SESSION['user']))
+        // {
+        //     return redirect()->to(base_url('login'));
+        // }
 
         $ticket = new \App\Models\Ticket;
 

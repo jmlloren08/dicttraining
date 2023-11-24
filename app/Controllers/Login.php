@@ -30,6 +30,7 @@ class Login extends BaseController
         if (!empty($result) && password_verify($password, $result['password'])) {
 
             $this->session->set('user', $result);
+            ///$this->session->set('is')
             return redirect()->to('.');
 
         } else {

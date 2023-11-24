@@ -9,6 +9,11 @@ class CategoryController extends ResourceController
 {
     public function index()
     {
+        // if (!isset($_SESSION['user']))
+        // {
+        //     return redirect()->to(base_url('login'));
+        // }
+        
         return view('categories');
     }
 
