@@ -19,8 +19,8 @@ class UserListController extends ResourceController
 
     public function show($id = null)
     {
-        $office = new \App\Models\User();
-        $data = $office->find($id);
+        $user = new \App\Models\User();
+        $data = $user->find($id);
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($data);
     }
 
@@ -63,6 +63,7 @@ class UserListController extends ResourceController
         $data = array();
         foreach ($records as $record) {
             $data[] = array(
+                "id"        => $record['id'],
                 "fullname"  => $record['fullname'],
                 "username"  => $record['username'],
                 "email"     => $record['email'],
@@ -79,6 +80,97 @@ class UserListController extends ResourceController
         );
 
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+    }
+
+    public function create()
+    {
+
+        $user = new \App\Models\User();
+        $data = $this->request->getJSON();
+
+        if (!$user->validate($data)) {
+            $response = array(
+                'status' => 'error',
+                'error' => true,
+                'messages' => $user->errors()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        try {
+            $user->insert($data);
+            $response = array(
+                'status' => 'success',
+                'error' => false,
+                'messages' => 'User added successfully'
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
+
+        } catch (\Exception $e) {
+            $reponse = array(
+                'status'    => 'error',
+                'error'     => true,
+                'messages'  => $e->getMessage()
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($reponse);
+        }
+    }
+
+    public function update($id = null)
+    {
+        $user = new \App\Models\User();
+        $data = $this->request->getJSON();
+        unset($data->id);
+
+        if (!$user->validate($data)) {
+            $response = array(
+                'status' => 'error',
+                'error' => true,
+                'messages' => $user->errors()
+            );
+            
+            var_dump($data);
+            print_r($data);
+
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+        }
+
+        $user->update($id, $data);
+
+        $response = array(
+            'status' => 'success',
+            'error' => false,
+            'messages' => 'User updated successfully'
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+    }
+
+    public function delete($id = null)
+    {
+
+        $user = new \App\Models\User();
+
+        if ($user->delete($id)) {
+            $response = array(
+                'status' => 'success',
+                'error' => false,
+                'messages' => 'User deleted successfully'
+            );
+
+            return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+        }
+
+        $response = array(
+            'status' => 'error',
+            'error' => true,
+            'messages' => 'User not found'
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
 
 }

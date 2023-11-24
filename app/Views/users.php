@@ -1,3 +1,15 @@
+<?php
+
+if (session('user')['groupuser'] === 'admin') {
+    $requireddisabled   = "disabled";
+    //$valstat            = null;
+} else {
+    $requireddisabled   = "required";
+    //$valstat            = "Open";
+}
+
+?>
+
 <?= $this->extend('template/admin_template'); ?>
 
 <?= $this->section('content'); ?>
@@ -14,15 +26,20 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-12">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID">
-                    Add User
-                </button>
-            </div>
+
+            <?php if (session('user')['groupuser'] === 'user') : ?>
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID">
+                        Add User
+                    </button>
+                </div>
+            <?php endif; ?>
+
         </div>
         <table id="dataTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Fullname</th>
                     <th>Username</th>
                     <th>Email Address</th>
@@ -37,7 +54,7 @@
             <div class="modal-dialog modal-md" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Office Details</h5>
+                        <h5 class="modal-title">User Details</h5>
                         <buton type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </buton>
@@ -48,7 +65,7 @@
                                 <input type="hidden" id="id" name="id">
                                 <div class="form-group">
                                     <label for="firstname">Firstname</label>
-                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter firstname" required>
+                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Enter firstname" <?= $requireddisabled; ?>>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
@@ -58,22 +75,59 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="lastname">Lastname</label>
-                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter lastname" required>
+                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter lastname" <?= $requireddisabled; ?>>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
-                                        Please enter office code.
+                                        Please enter your lastname.
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="office_description">Office Description</label>
-                                    <input type="text" class="form-control" id="office_description" name="office_description" placeholder="Enter office code" required>
+                                    <label for="username">Username</label>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" <?= $requireddisabled; ?>>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                     <div class="invalid-feedback">
-                                        Please enter description.
+                                        Please enter a username.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" <?= $requireddisabled; ?>>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user_role">Activate Role</label>
+                                    <select class="form-control custom-select" name="user_role" id="user_role">
+                                        <option value="">Select role</option>
+                                        <option value="User">User</option>
+                                        <option value="Admin">Admin</option>
+                                    </select>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please select a role.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="verify_user">Verify User</label>
+                                    <select class="form-control custom-select" name="verify_user" id="verify_user">
+                                        <option value="">Select verification</option>
+                                        <option value="Active">Verify</option>
+                                    </select>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please verify user.
                                     </div>
                                 </div>
 
@@ -96,6 +150,82 @@
 <?= $this->section('pagescripts'); ?>
 
 <script>
+    $(function() {
+
+        $("form").submit(function(event) {
+            event.preventDefault();
+
+            let formData = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+
+            let jsonData = JSON.stringify(formData);
+
+            if (this.checkValidity()) {
+                if (!formData.id) {
+                    $.ajax({
+                        url: "<?= base_url('users'); ?>",
+                        type: "POST",
+                        data: jsonData,
+                        success: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                subtitle: 'User',
+                                body: 'Record successfully added.',
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalID").modal("hide");
+                            clearForm();
+                            table.ajax.reload();
+                        },
+                        error: function(result) {
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                subtitle: 'User',
+                                body: 'Record not added.',
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "<?= base_url('users'); ?>/" + formData.id,
+                        type: "PUT",
+                        data: jsonData,
+                        success: function(data) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'Success',
+                                subtitle: 'User',
+                                body: 'Record successfully udpated.',
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalID").modal("hide");
+                            clearForm();
+                            table.ajax.reload();
+                        },
+                        error: function(result) {
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'Error',
+                                subtitle: 'User',
+                                body: 'Record not updated.',
+                                autohide: true,
+                                delay: 3000
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    });
+
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
@@ -105,7 +235,10 @@
             type: "POST"
         },
         columns: [{
-                data: "fullname",
+                data: "id",
+            },
+            {
+                data: 'fullname',
             },
             {
                 data: 'username',
@@ -148,6 +281,81 @@
         lengthMenu: [10, 20, 30, 50]
 
     });
+
+    $(document).on("click", "#editRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        $.ajax({
+            url: "<?= base_url('users'); ?>/" + id,
+            type: "GET",
+            success: function(data) {
+                $("#modalID").modal("show");
+                $("#id").val(data.id);
+                $("#firstname").val(data.firstname);
+                $("#lastname").val(data.lastname);
+                $("#username").val(data.username);
+                $("#email").val(data.email);
+                $("#user_role").val(data.role);
+                $("#verify_user").val(data.status);
+            },
+            error: function(result) {
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Error',
+                    subtitle: 'User',
+                    body: 'Record not found.',
+                    autohide: true,
+                    delay: 3000
+                });
+            }
+        });
+    });
+
+    $(document).on("click", "#deleteRow", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        if (confirm("Are you sure you want to delete this record?")) {
+            $.ajax({
+                url: "<?= base_url('users'); ?>/" + id,
+                type: "DELETE",
+                success: function(data) {
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        subtitle: 'User',
+                        body: 'Record was deleted.',
+                        autohide: true,
+                        delay: 3000
+                    });
+                    table.ajax.reload();
+                },
+                error: function(result) {
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        subtitle: 'User',
+                        body: 'Record not found.',
+                        autohide: true,
+                        delay: 3000
+                    });
+                }
+            });
+        }
+    });
+
+    function clearForm() {
+        $("#id").val("");
+        $("#firstname").val("");
+        $("#lastname").val("");
+        $("#username").val("");
+        $("#email").val("");
+        $("#user_role").val("");
+        $("#verify_user").val("");
+        // $("#username").val("");
+    }
+
 
     $(document).ready(function() {
         'use strict';

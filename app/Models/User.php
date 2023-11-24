@@ -19,10 +19,13 @@ class User extends Model
     protected $validationRules      = [
         'firstname'  => 'required|min_length[3]|max_length[100]',
         'lastname'   => 'required|min_length[3]|max_length[100]',
-        'username'   => 'required|is_unique[users.username]|min_length[3]|max_length[50]',
-        'email'      => 'required|is_unique[users.email]|min_length[3]|max_length[50]',
+        'username'   => 'required|min_length[3]|max_length[50]',
+        'email'      => 'required|min_length[3]|max_length[50]',
         'password'   => 'required|min_length[8]|max_length[255]',
+        'role'       => 'required',
+        'status'     => 'required',
     ];
+
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
