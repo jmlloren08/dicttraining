@@ -15,18 +15,14 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav  ">
-                            <?php
-                            if (auth()->loggedIn()) {
-                            ?>
+                            <?php if (session('user')) : ?>
                                 <li class="nav-item">
                                     <a class="nav-link" href="dashboard">Dashboard</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="logout">Logout</a>
+                                    <a class="nav-link" href="login/logout">Logout</a>
                                 </li>
-                            <?php
-                            } else {
-                            ?>
+                            <?php else : ?>
                         </ul>
                         <div class="row">
                             <div class="col-sm-5">
@@ -44,9 +40,7 @@
                                 </div>
                             </div>
                         </div>
-                    <?php
-                            }
-                    ?>
+                        <?php endif; ?>
                     </div>
                 </nav>
             </div>
@@ -67,7 +61,7 @@
 
                                 <div class="col-md-6">
                                     <div class="detail-box">
-                                        <h1>Welcome <?= auth()->user()->username ?? "to DILG Support Ticket System" ?> </h1>
+                                        <h1>Welcome <?= session('user') ? session('user')['username'] : "to DILG Support Ticket System"; ?> </h1>
                                         <p>
                                         At the core of our platform is a commitment to streamline and enhance your customer support experience.
                                         </p>

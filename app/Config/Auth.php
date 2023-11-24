@@ -198,6 +198,26 @@ class Auth extends ShieldAuth
         'rememberLength'     => 30 * DAY,
     ];
 
+    // adding field for firstname and lastname
+    public array $firstnameValidationRules = [
+        'label' => 'Auth.firstname',
+        'rules' => [
+            'required',
+            'max_length[50]',
+            'min_length[3]',
+            'regex_match[/^[A-Za-z][a-z]*((\s|\-|\')[A-Z][a-z]*)*$/]',
+        ],
+    ];
+
+    public array $lastnameValidationRules = [
+        'label' => 'Auth.lastname',
+        'rules' => [
+            'required',
+            'max_length[50]',
+            'min_length[3]',
+            'regex_match[/^[A-Za-z][a-z]*((\s|\-|\')[A-Z][a-z]*)*$/]',
+        ],
+    ];
     /**
      * --------------------------------------------------------------------
      * The validation rules for username
@@ -287,7 +307,7 @@ class Auth extends ShieldAuth
      * For example:
      *     $personalFields = ['firstname', 'lastname'];
      */
-    public array $personalFields = [];
+    public array $personalFields = ['firstname', 'lastname'];
 
     /**
      * --------------------------------------------------------------------

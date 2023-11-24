@@ -1,6 +1,6 @@
 <?php
 
-if (auth()->user()->inGroup('admin')) {
+if (session('user')['groupuser'] === 'admin') {
     $requireddisabled   = "disabled";
     //$valstat            = null;
 } else {
@@ -27,7 +27,7 @@ if (auth()->user()->inGroup('admin')) {
     <div class="container-fluid">
         <div class="row mb-2">
 
-            <?php if (auth()->user()->inGroup('user')) : ?>
+            <?php if (session('user')['groupuser'] === 'user') : ?>
                 <div class="row m-2">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID">
                         Add Ticket
@@ -66,7 +66,7 @@ if (auth()->user()->inGroup('admin')) {
                             <div class="card-body">
                                 <input type="hidden" id="id" name="id">
 
-                                <?php if (auth()->user()->inGroup('admin')) : ?>
+                                <?php if (session('user')['groupuser'] === 'admin') : ?>
                                     <div class="form-group">
                                         <label for="ticket_status_id">Update Status</label>
                                         <select class="form-control custom-select" name="ticket_status_id" id="ticket_status_id" required>

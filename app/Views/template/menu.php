@@ -1,4 +1,5 @@
- <!-- Navbar -->
+
+<!-- Navbar -->
  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
      <!-- Left navbar links -->
      <ul class="navbar-nav">
@@ -10,7 +11,7 @@
      <!-- Right navbar links -->
      <ul class="navbar-nav ml-auto">
          <li class="nav-item">
-             <a class="nav-link" href="<?= base_url() ?>logout" role="button">
+             <a class="nav-link" href="<?= base_url() ?>login\logout" role="button">
                  <i class="fas fa-sign-out-alt"></i>
              </a>
          </li>
@@ -31,9 +32,10 @@
      <div class="sidebar">
          <!-- Sidebar user panel (optional) -->
          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-             
+
              <div class="info">
-                 <a href="#" class="d-block"><?= auth()->user()->username ?? "GUEST" ?></a>
+                 <a href="#" class="d-block">Welcome, <?= session('user') ? session('user')['username'] : "to DILG Support Ticket System"; ?></a>
+                 
              </div>
          </div>
 
@@ -57,7 +59,7 @@
                      </a>
                  </li>
 
-                 <?php if (auth()->user()->inGroup('admin')) : ?>
+                 <?php if (session('user')['groupuser'] === 'admin') : ?>
                      <li class="nav-header">MASTER FILE</li>
                      <li class="nav-item">
                          <a href="<?= base_url() ?>offices" class="nav-link">

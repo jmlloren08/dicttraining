@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\HTTP\Response;
+use CodeIgniter\RESTful\ResourceController;
 
-class UserController extends ResourceController
+class UserListController extends ResourceController
 {
     public function index()
     {
@@ -14,8 +14,8 @@ class UserController extends ResourceController
 
     public function show($id = null)
     {
-        $user = new \App\Models\User();
-        $data = $user->find($id);
+        $office = new \App\Models\User();
+        $data = $office->find($id);
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($data);
     }
 
@@ -31,36 +31,38 @@ class UserController extends ResourceController
         $sortdir = $postData['order'][0]['dir']; // asc or desc
         $sortcolumn = $postData['columns'][$sortby]['data']; // Column name 
 
+
         $user = new \App\Models\User();
-
-        $user->select('users.id, auth_groups_users.group as usergroup, auth_identities.secret as secretemail, users.username as uname')
-            ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
-            ->join('auth_identities', 'auth_identities.user_id = users.id', 'left');
-
         $totalRecords = $user->select('id')->countAllResults();
 
         $totalRecordswithFilter = $user->select('id')
-            ->orLike('usergroup', $searchValue)
-            ->orLike('secretemail', $searchValue)
-            ->orLike('uname', $searchValue)
+            ->orLike('firstname', $searchValue)
+            ->orLike('lastname', $searchValue)
+            ->orLike('username', $searchValue)
+            ->orLike('email', $searchValue)
+            ->orLike('role', $searchValue)
+            ->orLike('status', $searchValue)
             ->orderBy($sortcolumn, $sortdir)
             ->countAllResults();
 
-        $records = $user->select('*')
-            ->orLike('usergroup', $searchValue)
-            ->orLike('secretemail', $searchValue)
-            ->orLike('uname', $searchValue)
+        $records = $user->select('*, CONCAT(firstname, " ", lastname) AS fullname')
+            ->orLike('firstname', $searchValue)
+            ->orLike('lastname', $searchValue)
+            ->orLike('username', $searchValue)
+            ->orLike('email', $searchValue)
+            ->orLike('role', $searchValue)
+            ->orLike('status', $searchValue)
             ->orderBy($sortcolumn, $sortdir)
             ->findAll($rowperpage, $start);
 
         $data = array();
         foreach ($records as $record) {
             $data[] = array(
-                "id"            => $record['id'],
-                "usergroup"     => $record['usergroup'],
-                "secretemail"   => $record['secretemail'],
-                "uname"         => $record['uname'],
-                "created_at"    => $record['created_at'],
+                "fullname"  => $record['fullname'],
+                "username"  => $record['username'],
+                "email"     => $record['email'],
+                "role"      => $record['role'],
+                "status"    => $record['status'],
             );
         }
 
@@ -73,4 +75,5 @@ class UserController extends ResourceController
 
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
+
 }

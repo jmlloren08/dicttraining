@@ -12,17 +12,17 @@ class User extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['firstname', 'lastname', 'username', 'email', 'password', 'role', 'status'];
 
-    // Dates
-    protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'firstname'  => 'required|min_length[3]|max_length[100]',
+        'lastname'   => 'required|min_length[3]|max_length[100]',
+        'username'   => 'required|is_unique[users.username]|min_length[3]|max_length[50]',
+        'email'      => 'required|is_unique[users.email]|min_length[3]|max_length[50]',
+        'password'   => 'required|min_length[8]|max_length[255]',
+    ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;

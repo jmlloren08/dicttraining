@@ -23,10 +23,11 @@
         <table id="dataTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Fullname</th>
                     <th>Username</th>
                     <th>Email Address</th>
                     <th>Role</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -95,7 +96,6 @@
 <?= $this->section('pagescripts'); ?>
 
 <script>
-
     let table = $("#dataTable").DataTable({
         responsive: true,
         processing: true,
@@ -105,16 +105,31 @@
             type: "POST"
         },
         columns: [{
-                data: "id",
+                data: "fullname",
             },
             {
-                data: 'uname',
+                data: 'username',
             },
             {
-                data: 'secretemail',
+                data: 'email',
             },
             {
-                data: 'usergroup',
+                data: 'role',
+                render: function(data, type, row) {
+                    if (data === 'Unidentified') {
+                        return '<span class="badge badge-warning">Unidentified</span>';
+                    } else if (data === 'User') {
+                        return '<span class="badge badge-primary">User</span>';
+                    } else {
+                        return '<span class="badge badge-success">Admin</span>';
+                    }
+                }
+            },
+            {
+                data: 'status',
+                render: function(data, type, row) {
+                    return data === '0' ? '<span class="badge badge-danger">Unverified</span>' : '<span class="badge badge-success">Verified</span>';
+                }
             },
             {
                 data: '',

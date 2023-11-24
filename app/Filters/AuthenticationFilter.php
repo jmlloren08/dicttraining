@@ -5,8 +5,9 @@ namespace App\Filters;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 
-class Auth implements FilterInterface
+class AuthenticationFilter implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -25,10 +26,11 @@ class Auth implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        // helper('auth');
-        // if(!auth()->loggedIn()){
-        //     return redirect()->to(base_url('login'));
-        // }
+        $session = Services::session();
+
+        if (!$session->has('isLogginIn')) {
+            return redirect()->to('login');
+        }
     }
 
     /**
