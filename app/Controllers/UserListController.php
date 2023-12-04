@@ -107,7 +107,6 @@ class UserListController extends ResourceController
             );
 
             return $this->response->setStatusCode(Response::HTTP_CREATED)->setJSON($response);
-
         } catch (\Exception $e) {
             $reponse = array(
                 'status'    => 'error',
@@ -125,26 +124,46 @@ class UserListController extends ResourceController
         $data = $this->request->getJSON();
         unset($data->id);
 
-        if (!$user->validate($data)) {
-            $response = array(
-                'status' => 'error',
-                'error' => true,
-                'messages' => $user->errors()
-            );
-            
-            var_dump($data);
-            print_r($data);
+        if (session('user')['role'] === 'User') {
 
-            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+            $allowedFields = ['firstname', 'lastname', 'username', 'email', 'password'];
+            $allowedData = array_intersect_key((array) $data, array_flip($allowedFields));
+
+            if (!$user->validate($allowedData)) {
+                $response = array(
+                    'status' => 'error',
+                    'error' => true,
+                    'messages' => $user->errors()
+                );
+
+                return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+            }
+
+            $user->update($id, $allowedData);
+
+        } else {
+
+            $allowedFields = ['role', 'status'];
+            $allowedData = array_intersect_key((array) $data, array_flip($allowedFields));
+
+            if (!$user->validate($allowedData)) {
+                $response = [
+                    'status' => 'error',
+                    'error' => true,
+                    'messages' => $user->errors()
+                ];
+
+                return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
+            }
+
+            $user->update($id, $allowedData);
         }
 
-        $user->update($id, $data);
-
-        $response = array(
+        $response = [
             'status' => 'success',
             'error' => false,
             'messages' => 'User updated successfully'
-        );
+        ];
 
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
     }
@@ -172,5 +191,4 @@ class UserListController extends ResourceController
 
         return $this->response->setStatusCode(Response::HTTP_NOT_FOUND)->setJSON($response);
     }
-
 }

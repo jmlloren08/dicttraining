@@ -34,7 +34,7 @@
          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
              <div class="info">
-                 <a href="#" class="d-block">Welcome, <?= session('user') ? session('user')['username'] : "to DILG Support Ticket System"; ?></a>
+                 <a href="<?= base_url('profile') ?>" class="d-block">Welcome, <?= session('user') ? session('user')['firstname'] : "to DILG Support Ticket System"; ?></a>
                  
              </div>
          </div>
@@ -59,7 +59,7 @@
                      </a>
                  </li>
 
-                 <?php if (session('user')['groupuser'] === 'admin') : ?>
+                 <?php if (session('user')['role'] === 'Admin') : ?>
                      <li class="nav-header">MASTER FILE</li>
                      <li class="nav-item">
                          <a href="<?= base_url() ?>offices" class="nav-link">

@@ -1,6 +1,6 @@
 <?php
 
-if (session('user')['groupuser'] === 'admin') {
+if (session('user')['role'] === 'Admin') {
     $requireddisabled   = "disabled";
     //$valstat            = null;
 } else {
@@ -27,7 +27,7 @@ if (session('user')['groupuser'] === 'admin') {
     <div class="container-fluid">
         <div class="row mb-2">
 
-            <?php if (session('user')['groupuser'] === 'user') : ?>
+            <?php if (session('user')['role'] === 'User') : ?>
                 <div class="col-sm-12">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalID">
                         Add User
@@ -104,8 +104,8 @@ if (session('user')['groupuser'] === 'admin') {
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="user_role">Activate Role</label>
-                                    <select class="form-control custom-select" name="user_role" id="user_role">
+                                    <label for="role">Activate Role</label>
+                                    <select class="form-control custom-select" name="role" id="role">
                                         <option value="">Select role</option>
                                         <option value="User">User</option>
                                         <option value="Admin">Admin</option>
@@ -118,10 +118,11 @@ if (session('user')['groupuser'] === 'admin') {
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="verify_user">Verify User</label>
-                                    <select class="form-control custom-select" name="verify_user" id="verify_user">
+                                    <label for="status">Verify User</label>
+                                    <select class="form-control custom-select" name="status" id="status">
                                         <option value="">Select verification</option>
-                                        <option value="Active">Verify</option>
+                                        <option value="Active">Activate?</option>
+                                        <option value="Unverified">Deactivate User</option>
                                     </select>
                                     <div class="valid-feedback">
                                         Looks good!
@@ -261,14 +262,14 @@ if (session('user')['groupuser'] === 'admin') {
             {
                 data: 'status',
                 render: function(data, type, row) {
-                    return data === '0' ? '<span class="badge badge-danger">Unverified</span>' : '<span class="badge badge-success">Verified</span>';
+                    return data === 'Unverified' ? '<span class="badge badge-danger">Unverified</span>' : '<span class="badge badge-success">Active</span>';
                 }
             },
             {
                 data: '',
-                defaultContent: `<td>
-            <button class="btn btn-warning btn-sm" id="editRow">Edit</button>
-            <button class="btn btn-danger btn-sm" id="deleteRow">Delete</button>
+                defaultContent: `<td class="text-right py-0 align-middle"><div class="btn-group btn-group-sm">
+            <a class="btn btn-info" id="editRow"><i class="fas fa-eye"></i></a>
+            <a class="btn btn-danger" id="deleteRow"><i class="fas fa-trash"></i></a>
             </td>`
             }
         ],
@@ -296,8 +297,8 @@ if (session('user')['groupuser'] === 'admin') {
                 $("#lastname").val(data.lastname);
                 $("#username").val(data.username);
                 $("#email").val(data.email);
-                $("#user_role").val(data.role);
-                $("#verify_user").val(data.status);
+                $("#role").val(data.role);
+                $("#status").val(data.status);
             },
             error: function(result) {
                 $(document).Toasts('create', {

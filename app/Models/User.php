@@ -22,8 +22,9 @@ class User extends Model
         'username'   => 'required|min_length[3]|max_length[50]',
         'email'      => 'required|min_length[3]|max_length[50]',
         'password'   => 'required|min_length[8]|max_length[255]',
-        'role'       => 'required',
-        'status'     => 'required',
+        // 'role'       => 'required',
+        // 'status'     => 'required',
+        // 'groupuser'  => 'required',
     ];
 
     protected $validationMessages   = [];

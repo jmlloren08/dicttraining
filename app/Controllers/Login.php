@@ -31,7 +31,7 @@ class Login extends BaseController
 
             $this->session->set('user', $result);
             ///$this->session->set('is')
-            return redirect()->to('.');
+            return redirect()->to(base_url(''));
 
         } else {
             $data['error'] = 'User not found. Please check your credentials.';

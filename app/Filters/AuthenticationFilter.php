@@ -29,6 +29,18 @@ class AuthenticationFilter implements FilterInterface
         if (!$this->isLoggedIn()) {
             return redirect()->to(base_url('login'));
         }
+
+        $allowedRoutesForAdminUsers = ['offices', 'categories', 'users'];
+        $uri = service('uri');
+        $route = $uri->getSegment(1);
+
+        $userRole = session('user')['role'];
+
+        if (in_array($route, $allowedRoutesForAdminUsers) && $userRole !== 'Admin') {
+            
+            return redirect()->back();
+        }
+
     }
 
     /**
