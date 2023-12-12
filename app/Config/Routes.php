@@ -36,3 +36,4 @@ $routes->resource('offices', ['controller' => 'OfficeController', 'except' => ['
 $routes->resource('categories', ['controller' => 'CategoryController', 'except' => ['new', 'edit']]);
 $routes->resource('users', ['controller' => 'UserListController', 'except' => ['new', 'edit']]);
 $routes->resource('tickets', ['controller' => 'TicketController', 'except' => ['new', 'edit']]);
+$routes->resource('profile', ['controller' => 'ProfileController', 'except' => ['new', 'edit']]);

@@ -124,40 +124,20 @@ class UserListController extends ResourceController
         $data = $this->request->getJSON();
         unset($data->id);
 
-        if (session('user')['role'] === 'User') {
+        $allowedFields = ['role', 'status'];
+        $allowedData = array_intersect_key((array) $data, array_flip($allowedFields));
 
-            $allowedFields = ['firstname', 'lastname', 'username', 'email', 'password'];
-            $allowedData = array_intersect_key((array) $data, array_flip($allowedFields));
+        if (!$user->validate($allowedData)) {
+            $response = [
+                'status' => 'error',
+                'error' => true,
+                'messages' => $user->errors()
+            ];
 
-            if (!$user->validate($allowedData)) {
-                $response = array(
-                    'status' => 'error',
-                    'error' => true,
-                    'messages' => $user->errors()
-                );
-
-                return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
-            }
-
-            $user->update($id, $allowedData);
-
-        } else {
-
-            $allowedFields = ['role', 'status'];
-            $allowedData = array_intersect_key((array) $data, array_flip($allowedFields));
-
-            if (!$user->validate($allowedData)) {
-                $response = [
-                    'status' => 'error',
-                    'error' => true,
-                    'messages' => $user->errors()
-                ];
-
-                return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
-            }
-
-            $user->update($id, $allowedData);
+            return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
         }
+
+        $user->update($id, $allowedData);
 
         $response = [
             'status' => 'success',

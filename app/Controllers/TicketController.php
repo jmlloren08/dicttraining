@@ -14,13 +14,10 @@ class TicketController extends ResourceController
      */
     public function index()
     {
-        // if (!isset($_SESSION['user']))
-        // {
-        //     return redirect()->to(base_url('login'));
-        // }
         
         $office = new \App\Models\Office();
         $category = new \App\Models\Category();
+        
         $data['categories'] = $category->findAll();
         $data['offices'] = $office->findAll();
 
@@ -51,11 +48,13 @@ class TicketController extends ResourceController
         $sortdir = $postData['order'][0]['dir']; // asc or desc
         $sortcolumn = $postData['columns'][$sortby]['data']; // Column name 
 
+        $loggedInUserID = session()->get('user')['id'];
 
         $ticket = new \App\Models\Ticket();
-        $totalRecords = $ticket->select('id')->countAllResults();
+        $totalRecords = $ticket->where('user_id', $loggedInUserID)->countAllResults();
 
         $totalRecordswithFilter = $ticket->select('tickets.id')
+            ->where('tickets.user_id', $loggedInUserID)
             ->join('offices', 'offices.id = tickets.office_id')
             ->orLike('offices.office_name', $searchValue)
             ->orLike('offices.office_code', $searchValue)
@@ -69,6 +68,7 @@ class TicketController extends ResourceController
             ->countAllResults();
 
         $records = $ticket->select('tickets.*, CONCAT(offices.office_name, " " "(" , offices.office_code, ")") as office, categories.cat_severity as catseverity, catnewstatus.cat_status as catstatus')
+            ->where('tickets.user_id', $loggedInUserID)
             ->join('offices', 'offices.id = tickets.office_id')
             ->join('categories', 'categories.id = tickets.ticket_severity_id', 'left')
             ->join('categories as catnewstatus', 'catnewstatus.id = tickets.ticket_status_id', 'left')
@@ -87,6 +87,7 @@ class TicketController extends ResourceController
         foreach ($records as $record) {
             $data[] = array(
                 "id"                    => $record['id'],
+                "user_id"               => $record['user_id'],
                 "office"                => $record['office'],
                 "catseverity"           => $record['catseverity'],
                 "catstatus"             => $record['catstatus'],

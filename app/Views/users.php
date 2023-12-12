@@ -203,7 +203,7 @@ if (session('user')['role'] === 'Admin') {
                                 class: 'bg-success',
                                 title: 'Success',
                                 subtitle: 'User',
-                                body: 'Record successfully udpated.',
+                                body: 'Record successfully updated.',
                                 autohide: true,
                                 delay: 3000
                             });

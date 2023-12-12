@@ -34,7 +34,7 @@
          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
              <div class="info">
-                 <a href="<?= base_url('profile') ?>" class="d-block">Welcome, <?= session('user') ? session('user')['firstname'] : "to DILG Support Ticket System"; ?></a>
+                 <a href="<?= base_url('profile') ?>" class="d-block">Welcome, <?= session('user') ? session('user')['id'] : "to DILG Support Ticket System"; ?></a>
                  
              </div>
          </div>

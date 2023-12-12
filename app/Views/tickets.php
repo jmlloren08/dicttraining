@@ -40,6 +40,7 @@ if (session('user')['role'] === 'Admin') {
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>User_ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
@@ -263,6 +264,9 @@ if (session('user')['role'] === 'Admin') {
         },
         columns: [{
                 data: "id",
+            },
+            {
+                data: 'user_id',
             },
             {
                 data: 'ticket_firstname',

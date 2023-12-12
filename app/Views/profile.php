@@ -28,9 +28,9 @@
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Update Profile</p>
 
-                    <form action="<?= base_url('profile') ?>" method="post">
+                    <form class="needs-validation" novalidate>
                         <?= csrf_field() ?>
-
+                        <input type="hidden" id="id" name="id" value="<?= $user['id']; ?>">
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" id="firstname" name="firstname" inputmode="text" placeholder="Firstname" value="<?= $user['firstname']; ?>">
                             <div class="input-group-append">
@@ -75,14 +75,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input type="password" class="form-control" id="passwordconfirm" name="passwordconfirm" inputmode="password" placeholder="Password confirm" value="<?= $user['password']; ?>">
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
 
@@ -105,6 +97,47 @@
 
 <?= $this->section('pagescripts'); ?>
 
+<script>
+    $(function() {
+        $("form").submit(function(event) {
+            event.preventDefault();
 
+            let formData = $(this).serializeArray().reduce(function(obj, item) {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
+
+            let jsonData = JSON.stringify(formData);
+
+            $.ajax({
+                url: "<?= base_url('profile'); ?>/" + formData.id,
+                type: "PUT",
+                data: jsonData,
+                success: function(data) {
+                    $(document).Toasts('create', {
+                        class: 'bg-success',
+                        title: 'Success',
+                        subtitle: 'Profile',
+                        body: 'User profile successfully updated.',
+                        autohide: true,
+                        delay: 3000
+                    });
+                    form.ajax.reload();
+                },
+                error: function(result) {
+                    $(document).Toasts('create', {
+                        class: 'bg-danger',
+                        title: 'Error',
+                        subtitle: 'Profile',
+                        body: 'User profile not updated.',
+                        autohide: true,
+                        delay: 3000
+                    });
+                }
+            });
+
+        });
+    });
+</script>
 
 <?= $this->endSection(); ?>

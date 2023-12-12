@@ -12,7 +12,7 @@ class Ticket extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['office_id', 'ticket_firstname', 'ticket_lastname', 'ticket_email', 'ticket_severity_id', 'ticket_description', 'ticket_status_id'];
+    protected $allowedFields    = ['user_id', 'office_id', 'ticket_firstname', 'ticket_lastname', 'ticket_email', 'ticket_severity_id', 'ticket_description', 'ticket_status_id'];
 
     // Dates
     protected $useTimestamps = true;
@@ -23,6 +23,7 @@ class Ticket extends Model
 
     // Validation
     protected $validationRules      = [
+        'user_id'               => 'required|integer',
         'office_id'             => 'required|integer',
         'ticket_firstname'      => 'required|min_length[3]|max_length[255]',
         'ticket_lastname'       => 'required|min_length[3]|max_length[255]',
@@ -55,6 +56,11 @@ class Ticket extends Model
         'category' => [
             'model'         => 'App\Models\Category',
             'foreign_key'   => 'ticket_severity_id',
+            'local_key'     => 'id'
+        ],
+        'users' => [
+            'model'         => 'App\Models\User',
+            'foreign_key'   => 'user_id',
             'local_key'     => 'id'
         ],
     ];

@@ -143,6 +143,7 @@ class OfficeController extends ResourceController
                 'error' => true,
                 'messages' => $office->errors()
             );
+            
             return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
         }
 
