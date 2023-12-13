@@ -40,7 +40,6 @@ if (session('user')['role'] === 'Admin') {
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>User_ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
@@ -65,7 +64,9 @@ if (session('user')['role'] === 'Admin') {
                     <div class="modal-body">
                         <form class="needs-validation" novalidate>
                             <div class="card-body">
+                                
                                 <input type="hidden" id="id" name="id">
+                                <input type="hidden" id="user_id" name="user_id" value="<?= session('user')['id']; ?>">
 
                                 <?php if (session('user')['role'] === 'Admin') : ?>
                                     <div class="form-group">
@@ -252,7 +253,8 @@ if (session('user')['role'] === 'Admin') {
         });
     });
 
-    // for tickets table...
+
+
 
     let table = $("#dataTable").DataTable({
         responsive: true,
@@ -262,11 +264,9 @@ if (session('user')['role'] === 'Admin') {
             url: "<?= base_url('tickets/list'); ?>",
             type: "POST"
         },
+
         columns: [{
                 data: "id",
-            },
-            {
-                data: 'user_id',
             },
             {
                 data: 'ticket_firstname',
